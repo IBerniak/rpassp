@@ -9,12 +9,11 @@ tesseract analyze):
 Which function is using is set in settings.py
 '''
 
-from time import sleep
-from random import randint, random
 import pytesseract
 from PIL import Image
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from site_services import wait
 
 wait = lambda x: sleep(randint(0, x) + random())
 
@@ -23,7 +22,7 @@ def manual_captcha(driver):
     Headless mode of FsspSearch should be set False.
     It is expected that user put a text of a captcha down manualy in this function.
     '''
-    sleep(72)
+    wait(72) # To put captcha manualy, util for testing
     # Browser should be shown
     # Interesting to try to reshow the browser if captcha
 
@@ -35,7 +34,7 @@ def cap2_captcha(driver):
     '''
     captcha = driver.find_element_by_xpath("//img[@id='capchaVisual']")
     captcha.screenshot('captcha.png')
-    captcha = Image.open('/Users/iliia.berniak/Desktop/RPA/Sandbox/captcha.png')
+    captcha = Image.open('./Source/captcha.png')
     # Implementing here, not implemented yet
 
 def tes_captcha(driver):
@@ -46,18 +45,13 @@ def tes_captcha(driver):
     '''
     wait(5)
     captcha = driver.driver.find_element_by_xpath("//img[@id='capchaVisual']")
-    captcha.screenshot('captcha.png')
-    with Image.open('./captcha.png') as captcha:
+    captcha.screenshot('./Source/captcha.png')
+    with Image.open('./Source/captcha.png') as captcha:
         parsed_captcha = pytesseract.image_to_string(captcha, lang='rus')
-    # print(parsed_captcha)
+        parsed_captcha = "".join(parsed_captcha.split())
+
+
     wait(2)
     input_captcha = driver.driver.find_element_by_xpath("//input[@id='captcha-popup-code']")
     input_captcha.send_keys(parsed_captcha) # Maybe it's better to keyboard input
     wait(3)
-    # input_captcha.send_keys(Keys.ENTER)
-
-    # page = driver.find_element_by_tag_name('html')
-    # action = ActionChains(driver)
-    # action.move_to_element_with_offset(page, 740, 270)
-    # action.click()
-    # action.perform()

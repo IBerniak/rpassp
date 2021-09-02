@@ -7,44 +7,45 @@ from excel import ExcelWB
 
 url = start_url
 proxy = proxies
-# proxy = None  # uncomment it to turn proxy off
 excel = excel_path
-driver = FsspSearch(url=url, proxy=proxy, rand_proxy=False, headless=False)
-table = ExcelWB(path=excel)
-captcha = handle_captcha
 
-srch_names_list = table.read_list()
+if __name__ == '__main__':
+    
+    driver = FsspSearch(url=url, proxy=proxy, rand_proxy=False, headless=False)
+    table = ExcelWB(path=excel)
 
-driver.start()
-driver.pass_start_popup()
+    srch_names_list = table.read_list()
 
-start = True
+    driver.start()
+    driver.pass_start_popup()
 
-def searched_result():     # Not to repeat myself
+    start = True
 
-    while driver.is_captcha():
-        captcha(driver)
-        if driver.is_blocked():
-            driver.change_ip()
+    def searched_result():
 
-    result = driver.collect_result(captcha)
-    return result
+        while driver.is_captcha():
+            handle_captcha(driver)
+            if driver.is_blocked():
+                driver.change_ip()
 
-result_act_list = []
+        result = driver.collect_result(handle_captcha)
+        return result
 
-while srch_names_list:
-    if start:
-        driver.start_search_form(*srch_names_list.pop(0))
-        result = searched_result()
-        if result:
-            result_act_list = result
-        start = False
+    result_act_list = []
 
-    else:
-        driver.new_search(*srch_names_list.pop(0))
-        temp_list = searched_result()
-        if temp_list:
-            result_act_list += temp_list
+    while srch_names_list:
+        if start:
+            driver.start_search_form(*srch_names_list.pop(0))
+            result = searched_result()
+            if result:
+                result_act_list = result
+            start = False
 
-driver.driver.quit()
-table.write_acts(result_act_list)  # The table should be new each time!
+        else:
+            driver.new_search(*srch_names_list.pop(0))
+            temp_list = searched_result()
+            if temp_list:
+                result_act_list += temp_list
+
+    driver.driver.quit()
+    table.write_acts(result_act_list)  # The table should be new each time!

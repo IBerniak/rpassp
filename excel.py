@@ -31,9 +31,6 @@ class ExcelWB:
     def __init__(self, path='./Source/actual.xlsx'):
         self.path = path
 
-    def validate_wb(self):
-        pass
-        # Necessary to implement validation for the workbook
 
     def read_list(self):
         '''
@@ -43,7 +40,6 @@ class ExcelWB:
         other names should be at the first row, too.
         '''
         sheet = load_workbook(filename = self.path)['CheckList']
-        # res_list = [row for row in sheet.values if row[0] and (row[0] != 'LastName')]
         res_list = []
 
         for row in sheet.values:
@@ -58,8 +54,6 @@ class ExcelWB:
                     bd = f'{day}.{month}.{year}'
 
                     res_list.append((ln, fn, pat, bd)) #
-                else:
-                    continue
             else:
                 break
 
@@ -71,7 +65,6 @@ class ExcelWB:
         into the <name>.xlsx file.
         The file mustn't have a table 'FoundActs' else an exception raises.
         '''
-        # Should be implemented cell styles and merges by name in A-column
         workbook = load_workbook(filename = self.path)
 
         try:
@@ -102,5 +95,5 @@ class ExcelWB:
             workbook.save(filename = self.path)
 
         else:
-            raise WorkBookFail('Probably the workbook is used already, the new \
+            raise IOError('Probably the workbook is used already, the new \
             one shouldn\'t have the FoundActs-sheet')

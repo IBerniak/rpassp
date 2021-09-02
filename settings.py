@@ -1,20 +1,19 @@
 '''
 Some settings. Actual method to pass captcha, proxy-list, some paths.
-For correct working the module 'credentials.py' is necessary!
+For correct working the good proxy list is necessary!
 '''
 
-from credentials import proxy_set
 import captcha
 
 captcha_method = {
     'manual': captcha.manual_captcha, # Headless mode should be turned off
-    '2captcha': captcha.cap2_captcha, # credentials.py module should exist and be defined properly
+    '2captcha': captcha.cap2_captcha,
     'tesseract': captcha.tes_captcha,
 }
 
 handle_captcha = captcha_method['tesseract']
 
-proxies = [proxy for proxy in proxy_set]
+proxies = ['198.199.120.102:8080', '209.97.150.167:3128'] # Proxies for free from proxy-sale.com
 
 start_url = 'http://fssprus.ru/'
 

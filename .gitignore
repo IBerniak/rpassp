@@ -4,3 +4,4 @@ venv
 credentials.py
 Source/Driver
 chromedriver
+.DS_Store
