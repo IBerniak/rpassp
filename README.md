@@ -1,6 +1,8 @@
 # rpassp
 
-Executable script -- run.py
+A script to collect information from fssprf-site. 
+
+Executable script -- run.py.
 
 Some settings should be set at settings.py: captcha pass method by define handle_captcha properly and a list of proxy (at this moment there are proxies for free, they don't work well). 
 Some settings are available at run.py in the constructor FsspSearch: actual -- headless True or False. 
